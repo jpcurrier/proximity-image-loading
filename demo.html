@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Proximity Image Loading</title>
+  <style>
+    ul{
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    li,
+    li:before{
+      -o-transition: all 400ms ease-out;
+    	-moz-transition: all 400ms ease-out;
+    	-webkit-transition: all 400ms ease-out;
+    	transition: all 400ms ease-out;
+    }
+    li{
+      position: relative;
+      height: 350px;
+    }
+    li.fail{
+      background-color: #f00;
+    }
+    li:before{
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background-color: #fff;
+    }
+    li.loaded:before,
+    li.fail:before{
+      opacity: 0;
+    }
+    img{
+      width: auto;
+      height: 350px;
+    }
+    figure{
+      width: 350px;
+      height: 350px;
+      margin: 0;
+      background-position: center;
+      background-size: cover;
+    }
+  </style>
+</head>
+
+<body>
+  <ul>
+    <li>
+      <img data-load="https://upload.wikimedia.org/wikipedia/commons/9/9e/A_New_View_of_the_Tarantula_Nebula.jpg">
+    </li>
+    <li>
+      <figure data-load="https://upload.wikimedia.org/wikipedia/commons/7/7f/Comets_Kick_up_Dust_in_Helix_Nebula_%28PIA09178%29.jpg"></figure>
+    </li>
+    <li>
+      <img data-load="https://upload.wikimedia.org/wikipedia/commons/a/ad/Heart_and_Soul_nebulae.jpg">
+    </li>
+    <li>
+      <img data-load="http://this/will/fail">
+    </li>
+    <li>
+      <figure data-load="https://upload.wikimedia.org/wikipedia/commons/5/5b/Ultraviolet_image_of_the_Cygnus_Loop_Nebula_crop.jpg"></figure>
+    </li>
+    <li>
+      <img data-load="https://upload.wikimedia.org/wikipedia/commons/a/a7/Nebulosa_de_Eta_Carinae_o_NGC_3372.jpg">
+    </li>
+    <li>
+      <figure data-load="https://upload.wikimedia.org/wikipedia/commons/6/68/Barnard_33.jpg"></figure>
+    </li>
+  </ul>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="proximity-image-loading/proximity-image-loading.js"></script>
+  <script>
+    $( 'img, figure' ).proximityLoad({
+      proximity: '-50%',
+      success: successCallback,
+      fail: failCallback
+    });
+
+    function successCallback( $item ){
+      setTimeout( function(){
+        $item.parent().addClass( 'loaded' );
+      }, 100 );
+    }
+    function failCallback( $item ){
+      $item.parent().addClass( 'fail' );
+    }
+  </script>
+</body>
+
+</html>
